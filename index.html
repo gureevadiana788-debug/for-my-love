@@ -18,12 +18,12 @@
 </head>
 <body>
 
-<form action="https://formspree.io" method="POST" id="quizForm" class="card">
+<form action="https://formspree.io" method="POST" class="card">
     
     <!-- Шаг 0 -->
     <div class="step active" id="s0">
         <h1>Привет, мой любимый! ✨</h1>
-        <p>Я создала этот уголок специально для тебя. Пройди короткий опрос, пожалуйста!</p>
+        <p>Я создал этот уголок специально для тебя. Пройди короткий опрос, пожалуйста!</p>
         <button type="button" class="btn-next" onclick="go(1)">Начать 💕</button>
     </div>
 
@@ -57,17 +57,12 @@
     <!-- Шаг 4 -->
     <div class="step" id="s4">
         <h1>О чем ты сейчас думаешь?</h1>
-        <textarea name="4. Мысли" id="txt" placeholder="Напиши тут все..."></textarea>
-        <br>
-        <button type="submit" class="btn-next">Отправить ✨</button>
-    </div>
+        <textarea name="4. Мысли" placeholder="Напиши тут все..."></textarea>
+        
 
-    <!-- Шаг 5 -->
-    <div class="step" id="s5">
-        <h1 style="font-size: 50px; margin: 0;">🦊❤️</h1>
-        <h1>Спасибо за ответы!</h1>
-        <p>Лисёнок, я очень жду тебя дома. Люблю тебя ❤️</p>
-        <p style="font-size: 14px; color: #8a8a8a; font-style: italic;">Ты — мое главное счастье. Пожалуйста, улыбнись! ✨🧸</p>
+        <!-- Перенаправление после успешной отправки -->
+        <input type="hidden" name="_next" value="https://github.io">
+        <button type="submit" class="btn-next">Отправить ✨</button>
     </div>
 </form>
 
@@ -79,28 +74,13 @@
         }
         document.getElementById('s' + num).classList.add('active');
     }
+
     function save(id, val) {
         document.getElementById(id).value = val;
         if(id === 'q1') go(2);
         if(id === 'q2') go(3);
         if(id === 'q3') go(4);
     }
-
-    document.getElementById('quizForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        var form = this;
-        var data = new FormData(form);
-        
-        fetch(form.action, {
-            method: form.method,
-            body: data,
-            headers: { 'Accept': 'application/json' }
-        }).then(function() {
-            go(5);
-        }).catch(function() {
-            go(5);
-        });
-    });
 </script>
 
 </body>
