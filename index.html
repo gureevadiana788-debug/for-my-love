@@ -28,12 +28,12 @@
     <div class="step" id="s1">
         <h1>Как ты себя чувствуешь?</h1>
         <button class="btn" onclick="save('q1','Супер')">☀️ Всё супер, полон сил!</button>
-        <button class="btn" onclick="save('q1','Устал')">☁️ Немного устал(а)</button>
+        <button class="btn" onclick="save('q1','Устал')">☁️ Немного устал</button>
         <button class="btn" onclick="save('q1','Грустно')">🌧️ Грустно или тревожно</button>
     </div>
 
     <div class="step" id="s2">
-        <h1>Ты сегодня кушал?</h1>
+        <h1>Ты сегодня кушал(а)?</h1>
         <button class="btn" onclick="save('q2','Да')">🍔 Да, сытно и вкусно!</button>
         <button class="btn" onclick="save('q2','Перекус')">☕️ Только перекусил</button>
         <button class="btn" onclick="save('q2','Нет')">🙅‍♂️ Нет, еще не успел</button>
@@ -42,7 +42,7 @@
     <div class="step" id="s3">
         <h1>Что тебе сейчас нужно?</h1>
         <button class="btn" onclick="save('q3','Объятия')">🧸 Крепкие объятия</button>
-        <button class="btn" onclick="save('q3','Вкусняшка')">🍫 Игрулька</button>
+        <button class="btn" onclick="save('q3','Вкусняшка')">🍫 Игрульки</button>
         <button class="btn" onclick="save('q3','Покой')">🤫 Тишина и покой</button>
     </div>
 
@@ -62,12 +62,15 @@
 
 <script>
     const TOKEN = '8881598713:AAE5QfdQA8w8bWX9vqXsv2iGPE2DUFhahWI';
-    const CHAT_ID = 1017122645; // Замените на ваш ID числом, например: 12345678
+    const CHAT_ID = 1017122645;
 
     let data = { q1:'', q2:'', q3:'', q4:'' };
 
     function go(num) {
-        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        var steps = document.getElementsByClassName('step');
+        for (var i = 0; i < steps.length; i++) {
+            steps[i].classList.remove('active');
+        }
         document.getElementById('s' + num).classList.add('active');
     }
 
@@ -79,13 +82,15 @@
     }
 
     function send() {
-        data.q4 = document.getElementById('txt').value || 'Пусто';
-        const text = 🔔 **Ответы от Лисёнка!**\n\n1. Настроение: ${data.q1}\n2. Покушал: ${data.q2}\n3. Нужно: ${data.q3}\n4. Мысли: ${data.q4};
-      fetch(https://telegram.org{TOKEN}/sendMessage, {
+        var tx = document.getElementById('txt');
+        data.q4 = tx ? tx.value : 'Пусто';
+        var text = '🔔 Ответы от Лисёнка:\n1: ' + data.q1 + '\n2: ' + data.q2 + '\n3: ' + data.q3 + '\n4: ' + data.q4;
+        fetch('https://telegram.org' + TOKEN + '/sendMessage', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: CHAT_ID, text: text, parse_mode: 'Markdown' })
-        }).then(() => go(5)).catch(() => go(5));
+            body: JSON.stringify({ chat_id: CHAT_ID, text: text })
+        });
+        go(5);
     }
 </script>
 
