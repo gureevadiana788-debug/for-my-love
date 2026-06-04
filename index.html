@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для тебя ✨</title>
+    <style>
+        body { font-family: sans-serif; background: #fff0f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 400px; width: 100%; text-align: center; }
+        h1 { color: #ff6b8b; font-size: 22px; }
+        .step { display: none; }
+        .step.active { display: block; }
+        .btn { background: #fff0f5; border: 1px solid #ffb6c1; padding: 12px; border-radius: 12px; cursor: pointer; margin: 5px 0; width: 100%; text-align: left; font-size: 16px; }
+        .btn:hover { background: #ffb6c1; }
+        .btn-next { background: #ff6b8b; color: white; border: none; padding: 12px 24px; border-radius: 12px; cursor: pointer; font-size: 16px; margin-top: 15px; }
+        textarea { width: 100%; height: 80px; padding: 10px; box-sizing: border-box; border-radius: 12px; border: 1px solid #ffb6c1; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="step active" id="s0">
+        <h1>Привет, мой любимый! ✨</h1>
+        <p>Я создала этот уголок специально для тебя. Пройди короткий опрос, пожалуйста!</p>
+        <button class="btn-next" onclick="go(1)">Начать 💕</button>
+    </div>
+
+    <div class="step" id="s1">
+        <h1>Как ты себя чувствуешь?</h1>
+        <button class="btn" onclick="save('q1','Супер')">☀️ Всё супер, полон сил!</button>
+        <button class="btn" onclick="save('q1','Устал')">☁️ Немного устал(а)</button>
+        <button class="btn" onclick="save('q1','Грустно')">🌧️ Грустно или тревожно</button>
+    </div>
+
+    <div class="step" id="s2">
+        <h1>Ты сегодня кушал?</h1>
+        <button class="btn" onclick="save('q2','Да')">🍔 Да, сытно и вкусно!</button>
+        <button class="btn" onclick="save('q2','Перекус')">☕️ Только перекусил</button>
+        <button class="btn" onclick="save('q2','Нет')">🙅‍♂️ Нет, еще не успел</button>
+    </div>
+
+    <div class="step" id="s3">
+        <h1>Что тебе сейчас нужно?</h1>
+        <button class="btn" onclick="save('q3','Объятия')">🧸 Крепкие объятия</button>
+        <button class="btn" onclick="save('q3','Вкусняшка')">🍫 Игрулька</button>
+        <button class="btn" onclick="save('q3','Покой')">🤫 Тишина и покой</button>
+    </div>
+
+    <div class="step" id="s4">
+        <h1>О чем ты сейчас думаешь?</h1>
+        <textarea id="txt" placeholder="Напиши тут все..."></textarea>
+        <button class="btn-next" onclick="send()">Отправить ✨</button>
+    </div>
+
+    <div class="step" id="s5">
+        <h1 style="font-size: 50px; margin: 0;">🦊❤️</h1>
+        <h1>Спасибо за ответы!</h1>
+        <p>Лисёнок, я очень жду тебя дома. Люблю тебя ❤️</p>
+        <p style="font-size: 14px; color: #8a8a8a; font-style: italic;">Ты — мое главное счастье. Пожалуйста, улыбнись! ✨🧸</p>
+    </div>
+</div>
+
+<script>
+    const TOKEN = '8881598713:AAE5QfdQA8w8bWX9vqXsv2iGPE2DUFhahWI';
+    const CHAT_ID = 'dragomir6'; // Замените на ваш ID числом, например: 12345678
+
+    let data = { q1:'', q2:'', q3:'', q4:'' };
+
+    function go(num) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        document.getElementById('s' + num).classList.add('active');
+    }
+
+    function save(key, val) {
+        data[key] = val;
+        if(key === 'q1') go(2);
+        if(key === 'q2') go(3);
+        if(key === 'q3') go(4);
+    }
+
+    function send() {
+        data.q4 = document.getElementById('txt').value || 'Пусто';
+        const text = 🔔 **Ответы от Лисёнка!**\n\n1. Настроение: ${data.q1}\n2. Покушал: ${data.q2}\n3. Нужно: ${data.q3}\n4. Мысли: ${data.q4};
+      fetch(https://telegram.org{TOKEN}/sendMessage, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: CHAT_ID, text: text, parse_mode: 'Markdown' })
+        }).then(() => go(5)).catch(() => go(5));
+    }
+</script>
+
+</body>
+</html>
